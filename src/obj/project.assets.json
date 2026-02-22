@@ -45,19 +45,19 @@
     ]
   },
   "packageFolders": {
-    "/home/codespace/.nuget/packages/": {}
+    "/home/jimjo/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/workspaces/CS690-Project/src/MiaLearningSystem.csproj",
+      "projectUniqueName": "/home/jimjo/CS690-Project/src/MiaLearningSystem.csproj",
       "projectName": "MiaLearningSystem",
-      "projectPath": "/workspaces/CS690-Project/src/MiaLearningSystem.csproj",
-      "packagesPath": "/home/codespace/.nuget/packages/",
-      "outputPath": "/workspaces/CS690-Project/src/obj/",
+      "projectPath": "/home/jimjo/CS690-Project/src/MiaLearningSystem.csproj",
+      "packagesPath": "/home/jimjo/.nuget/packages/",
+      "outputPath": "/home/jimjo/CS690-Project/src/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/codespace/.nuget/NuGet/NuGet.Config"
+        "/home/jimjo/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -108,7 +108,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/home/jimjo/.dotnet/sdk/10.0.103/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

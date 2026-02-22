@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiaLearningSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5295adbfdd230fbe12305bc7380874d9067e0d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01d7e85088aa0b1d92ebf6286827e0d70cbb968d")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiaLearningSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiaLearningSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
