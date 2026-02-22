@@ -1,0 +1,4 @@
+494b67f8-d6ed-44b0-b5f4-e51ce90cfea6:54b94b86-4729-4a5f-acf4-40d48624ffa4:Verbs
+125b062a-e2a7-464c-beb5-701bf8c3f8c7:7d199c4b-111d-4ccf-85fe-b4dbab9cba56:Verbs
+00a42a89-5c7a-44b9-b396-1f0f7d0a459b:54b94b86-4729-4a5f-acf4-40d48624ffa4:Nouns
+ad4e40d0-6f8c-4ae9-8224-42587be89a4d:7d199c4b-111d-4ccf-85fe-b4dbab9cba56:Nouns
