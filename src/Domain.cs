@@ -102,3 +102,45 @@ public class QuizTopic
         return $"{QuizTopicId}:{QuizId}:{TopicId}";
     }
 }
+
+public class ReferenceList
+{
+    public Guid ReferenceListId { get; }
+    public Guid CourseId { get; }
+    public string Name { get; }
+
+    public ReferenceList(Guid referenceListId, Guid courseId, string name)
+    {
+        ReferenceListId = referenceListId;
+        CourseId = courseId;
+        Name = name;
+    }
+
+    // Format: referenceListId:courseId:name  (name is last so it can contain colons)
+    public override string ToString()
+    {
+        return $"{ReferenceListId}:{CourseId}:{Name}";
+    }
+}
+
+public class ReferenceEntry
+{
+    public Guid EntryId { get; }
+    public Guid ReferenceListId { get; }
+    public string Term { get; }
+    public string Definition { get; }
+
+    public ReferenceEntry(Guid entryId, Guid referenceListId, string term, string definition)
+    {
+        EntryId = entryId;
+        ReferenceListId = referenceListId;
+        Term = term;
+        Definition = definition;
+    }
+
+    // Format: entryId:referenceListId:term:definition  (definition is last so it can contain colons)
+    public override string ToString()
+    {
+        return $"{EntryId}:{ReferenceListId}:{Term}:{Definition}";
+    }
+}

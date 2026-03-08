@@ -1,5 +1,6 @@
 namespace MiaLearningSystem;
 
+// Loads all entity data from flat text files on startup and writes back on every change.
 public class DataManager
 {
     private const string CoursesFile = "courses.txt";
@@ -7,6 +8,8 @@ public class DataManager
     private const string NotesIndexFile = "notes.txt";
     private const string QuizzesFile = "quizzes.txt";
     private const string QuizTopicsFile = "quiz_topics.txt";
+    private const string ReferenceListsFile = "reference_lists.txt";
+    private const string ReferenceEntriesFile = "reference_entries.txt";
     public const string NotesDirectory = "Notes";
 
     public List<Course> Courses { get; } = [];
@@ -14,6 +17,8 @@ public class DataManager
     public List<Note> Notes { get; } = [];
     public List<Quiz> Quizzes { get; } = [];
     public List<QuizTopic> QuizTopics { get; } = [];
+    public List<ReferenceList> ReferenceLists { get; } = [];
+    public List<ReferenceEntry> ReferenceEntries { get; } = [];
 
     public DataManager()
     {
@@ -23,6 +28,8 @@ public class DataManager
         LoadNotes();
         LoadQuizzes();
         LoadQuizTopics();
+        LoadReferenceLists();
+        LoadReferenceEntries();
     }
 
     private void LoadCourses()
@@ -60,6 +67,7 @@ public class DataManager
 
     private void SynchronizeCourses()
     {
+        // Delete and rewrite the entire file — simple for small datasets.
         File.Delete(CoursesFile);
         foreach (var course in Courses)
             File.AppendAllText(CoursesFile, course.ToString() + Environment.NewLine);
@@ -194,7 +202,7 @@ public class DataManager
     public void RemoveQuiz(Quiz quiz)
     {
         Quizzes.Remove(quiz);
-        QuizTopics.RemoveAll(qt => qt.QuizId == quiz.QuizId);
+        QuizTopics.RemoveAll(qt => qt.QuizId == quiz.QuizId); // cascade
         SynchronizeQuizzes();
         SynchronizeQuizTopics();
     }
@@ -238,6 +246,90 @@ public class DataManager
         File.Delete(QuizTopicsFile);
         foreach (var qt in QuizTopics)
             File.AppendAllText(QuizTopicsFile, qt.ToString() + Environment.NewLine);
+    }
+
+    private void LoadReferenceLists()
+    {
+        if (!File.Exists(ReferenceListsFile)) return;
+
+        foreach (var line in File.ReadAllLines(ReferenceListsFile))
+        {
+            if (string.IsNullOrWhiteSpace(line)) continue;
+            var parts = line.Split(':', 3);
+            if (parts.Length < 3) continue;
+            ReferenceLists.Add(new ReferenceList(Guid.Parse(parts[0]), Guid.Parse(parts[1]), parts[2]));
+        }
+    }
+
+    public void AddReferenceList(ReferenceList rl)
+    {
+        ReferenceLists.Add(rl);
+        SynchronizeReferenceLists();
+    }
+
+    public void UpdateReferenceList(Guid id, string newName)
+    {
+        int index = ReferenceLists.FindIndex(r => r.ReferenceListId == id);
+        if (index < 0) return;
+        var r = ReferenceLists[index];
+        ReferenceLists[index] = new ReferenceList(id, r.CourseId, newName);
+        SynchronizeReferenceLists();
+    }
+
+    public void RemoveReferenceList(ReferenceList rl)
+    {
+        ReferenceLists.Remove(rl);
+        ReferenceEntries.RemoveAll(e => e.ReferenceListId == rl.ReferenceListId); // cascade
+        SynchronizeReferenceLists();
+        SynchronizeReferenceEntries();
+    }
+
+    private void SynchronizeReferenceLists()
+    {
+        File.Delete(ReferenceListsFile);
+        foreach (var rl in ReferenceLists)
+            File.AppendAllText(ReferenceListsFile, rl.ToString() + Environment.NewLine);
+    }
+
+    private void LoadReferenceEntries()
+    {
+        if (!File.Exists(ReferenceEntriesFile)) return;
+
+        foreach (var line in File.ReadAllLines(ReferenceEntriesFile))
+        {
+            if (string.IsNullOrWhiteSpace(line)) continue;
+            var parts = line.Split(':', 4);
+            if (parts.Length < 4) continue;
+            ReferenceEntries.Add(new ReferenceEntry(Guid.Parse(parts[0]), Guid.Parse(parts[1]), parts[2], parts[3]));
+        }
+    }
+
+    public void AddReferenceEntry(ReferenceEntry entry)
+    {
+        ReferenceEntries.Add(entry);
+        SynchronizeReferenceEntries();
+    }
+
+    public void UpdateReferenceEntry(Guid entryId, string newTerm, string newDefinition)
+    {
+        int index = ReferenceEntries.FindIndex(e => e.EntryId == entryId);
+        if (index < 0) return;
+        var e = ReferenceEntries[index];
+        ReferenceEntries[index] = new ReferenceEntry(entryId, e.ReferenceListId, newTerm, newDefinition);
+        SynchronizeReferenceEntries();
+    }
+
+    public void RemoveReferenceEntry(ReferenceEntry entry)
+    {
+        ReferenceEntries.Remove(entry);
+        SynchronizeReferenceEntries();
+    }
+
+    private void SynchronizeReferenceEntries()
+    {
+        File.Delete(ReferenceEntriesFile);
+        foreach (var entry in ReferenceEntries)
+            File.AppendAllText(ReferenceEntriesFile, entry.ToString() + Environment.NewLine);
     }
 
     public static string NoteFilePath(Note note) =>

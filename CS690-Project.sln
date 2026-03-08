@@ -6,6 +6,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaLearningSystem", "src\MiaLearningSystem.csproj", "{BD200DED-D4E6-9D86-69A3-E06417171288}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src.Tests", "src.Tests", "{C3A7F1B2-D4E5-4F68-A9B0-E12345678901}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaLearningSystem.Tests", "src.Tests\MiaLearningSystem.Tests.csproj", "{D2B8E3C4-F5A6-4B79-C0D1-F23456789012}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,12 +20,17 @@ Global
 		{BD200DED-D4E6-9D86-69A3-E06417171288}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD200DED-D4E6-9D86-69A3-E06417171288}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD200DED-D4E6-9D86-69A3-E06417171288}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2B8E3C4-F5A6-4B79-C0D1-F23456789012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2B8E3C4-F5A6-4B79-C0D1-F23456789012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2B8E3C4-F5A6-4B79-C0D1-F23456789012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2B8E3C4-F5A6-4B79-C0D1-F23456789012}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BD200DED-D4E6-9D86-69A3-E06417171288} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{D2B8E3C4-F5A6-4B79-C0D1-F23456789012} = {C3A7F1B2-D4E5-4F68-A9B0-E12345678901}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C4FE8DC2-7C1E-4199-8DB2-0E64C58CC313}
