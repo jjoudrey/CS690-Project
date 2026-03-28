@@ -3,14 +3,14 @@ namespace MiaLearningSystem;
 // Loads all entity data from flat text files on startup and writes back on every change.
 public class DataManager
 {
-    private const string CoursesFile = "courses.txt";
-    private const string TopicsFile = "topics.txt";
-    private const string NotesIndexFile = "notes.txt";
-    private const string QuizzesFile = "quizzes.txt";
-    private const string QuizTopicsFile = "quiz_topics.txt";
-    private const string ReferenceListsFile = "reference_lists.txt";
-    private const string ReferenceEntriesFile = "reference_entries.txt";
-    public const string NotesDirectory = "Notes";
+    private const string CoursesFile = "Data/courses.txt";
+    private const string TopicsFile = "Data/topics.txt";
+    private const string NotesIndexFile = "Data/notes.txt";
+    private const string QuizzesFile = "Data/quizzes.txt";
+    private const string QuizTopicsFile = "Data/quiz_topics.txt";
+    private const string ReferenceListsFile = "Data/reference_lists.txt";
+    private const string ReferenceEntriesFile = "Data/reference_entries.txt";
+    public const string NotesDirectory = "Data/Notes";
 
     public List<Course> Courses { get; } = [];
     public List<Topic> Topics { get; } = [];

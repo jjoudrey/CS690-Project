@@ -4,13 +4,7 @@ public class ReferenceListTests
 {
     public ReferenceListTests()
     {
-        File.Delete("courses.txt");
-        File.Delete("topics.txt");
-        File.Delete("notes.txt");
-        File.Delete("quizzes.txt");
-        File.Delete("quiz_topics.txt");
-        File.Delete("reference_lists.txt");
-        File.Delete("reference_entries.txt");
+        if (Directory.Exists("Data")) Directory.Delete("Data", recursive: true);
     }
 
     [Fact]
