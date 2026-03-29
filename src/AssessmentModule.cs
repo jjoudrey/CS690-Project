@@ -16,15 +16,18 @@ public static class AssessmentModule
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("\n[bold]Select an option:[/]")
-                    .AddChoices("Create Quiz", "View Quizzes", "Edit Quiz", "Delete Quiz", "← Back")
+                    .AddChoices("Create Quiz", "View Upcoming Quizzes", "View Study Guide",
+                                "View Quizzes", "Edit Quiz", "Delete Quiz", "← Back")
             );
 
             switch (choice)
             {
-                case "Create Quiz":  CreateQuiz(dm); break;
-                case "View Quizzes": ViewQuizzes(dm); break;
-                case "Edit Quiz":    EditQuiz(dm); break;
-                case "Delete Quiz":  DeleteQuiz(dm); break;
+                case "Create Quiz":           CreateQuiz(dm); break;
+                case "View Upcoming Quizzes": ViewUpcomingQuizzes(dm); break;
+                case "View Study Guide":      ViewStudyGuide(dm); break;
+                case "View Quizzes":          ViewQuizzes(dm); break;
+                case "Edit Quiz":             EditQuiz(dm); break;
+                case "Delete Quiz":           DeleteQuiz(dm); break;
                 case "← Back": return;
             }
         }
@@ -84,6 +87,99 @@ public static class AssessmentModule
         AnsiConsole.MarkupLine($"  Course:    {Markup.Escape(CourseDisplay(course))}");
         AnsiConsole.MarkupLine($"  Due Date:  {dueDate:yyyy-MM-dd}");
         AnsiConsole.MarkupLine($"  Topics:    {selectedTopics.Count} selected");
+        Pause();
+    }
+
+    public static void ViewUpcomingQuizzes(DataManager dm)
+    {
+        AnsiConsole.Clear();
+        AnsiConsole.Write(new Rule("[bold blue]UPCOMING QUIZZES[/]").RuleStyle("blue"));
+
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var upcoming = dm.Quizzes
+            .Where(q => !q.IsCompleted && q.DueDate >= today)
+            .OrderBy(q => q.DueDate)
+            .ToList();
+
+        if (upcoming.Count == 0)
+        {
+            AnsiConsole.MarkupLine("\n[yellow]No upcoming quizzes.[/]");
+            Pause();
+            return;
+        }
+
+        var table = new Table();
+        table.AddColumn("Due Date");
+        table.AddColumn("Quiz");
+        table.AddColumn("Course");
+
+        foreach (var q in upcoming)
+        {
+            var course = dm.Courses.FirstOrDefault(c => c.CourseId == q.CourseId);
+            string courseDisplay = course != null ? CourseDisplay(course) : "Unknown";
+            table.AddRow(q.DueDate.ToString("yyyy-MM-dd"), Markup.Escape(q.Name), Markup.Escape(courseDisplay));
+        }
+
+        AnsiConsole.WriteLine();
+        AnsiConsole.Write(table);
+        Pause();
+    }
+
+    public static void ViewStudyGuide(DataManager dm)
+    {
+        AnsiConsole.Clear();
+        AnsiConsole.Write(new Rule("[bold blue]STUDY GUIDE[/]").RuleStyle("blue"));
+
+        var quiz = PromptQuiz(dm, "\n[bold]Select a quiz:[/]");
+        if (quiz is null) return;
+
+        var course = dm.Courses.FirstOrDefault(c => c.CourseId == quiz.CourseId);
+        var quizTopicIds = dm.QuizTopics
+            .Where(qt => qt.QuizId == quiz.QuizId)
+            .Select(qt => qt.TopicId)
+            .ToHashSet();
+        var scopeTopics = dm.Topics.Where(t => quizTopicIds.Contains(t.TopicId)).ToList();
+
+        AnsiConsole.Clear();
+        AnsiConsole.Write(new Rule("[bold blue]STUDY GUIDE[/]").RuleStyle("blue"));
+        AnsiConsole.MarkupLine($"\n[bold]{Markup.Escape(quiz.Name)}[/]");
+        AnsiConsole.MarkupLine($"Course: {Markup.Escape(course != null ? CourseDisplay(course) : "Unknown")}");
+        AnsiConsole.MarkupLine($"Due:    {quiz.DueDate:yyyy-MM-dd}");
+
+        if (scopeTopics.Count == 0)
+        {
+            AnsiConsole.MarkupLine("\n[yellow]No topics linked to this quiz.[/]");
+            Pause();
+            return;
+        }
+
+        foreach (var topic in scopeTopics)
+        {
+            AnsiConsole.WriteLine();
+            AnsiConsole.Write(new Rule($"[bold]{Markup.Escape(topic.Name)}[/]").RuleStyle("blue"));
+
+            var notes = dm.Notes.Where(n => n.TopicId == topic.TopicId).ToList();
+            if (notes.Count == 0)
+            {
+                AnsiConsole.MarkupLine("  [grey](No notes)[/]");
+                continue;
+            }
+
+            foreach (var note in notes)
+            {
+                AnsiConsole.MarkupLine($"\n  [bold underline]{Markup.Escape(note.Name)}[/]");
+                string[]? lines = DataManager.ReadNoteLines(note, out string err);
+                if (lines is null)
+                    AnsiConsole.MarkupLine($"    [red]{Markup.Escape(err)}[/]");
+                else if (lines.Length == 0)
+                    AnsiConsole.MarkupLine("    [grey](empty)[/]");
+                else
+                    foreach (var line in lines)
+                        AnsiConsole.MarkupLine($"    {Markup.Escape(line)}");
+            }
+        }
+
+        AnsiConsole.WriteLine();
         Pause();
     }
 
